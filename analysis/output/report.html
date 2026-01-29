@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books Scraper - Database Analysis Report</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f5f6fa; color: #2c3e50; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 10px; margin-bottom: 30px; text-align: center; }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .header p { opacity: 0.9; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .card { background: white; border-radius: 10px; padding: 25px; box-shadow: 0 2px 15px rgba(0,0,0,0.1); }
+        .card h3 { color: #667eea; margin-bottom: 15px; font-size: 1.1em; text-transform: uppercase; letter-spacing: 1px; }
+        .metric { font-size: 2.5em; font-weight: bold; color: #2c3e50; }
+        .metric-label { color: #7f8c8d; font-size: 0.9em; }
+        .chart-container { margin-bottom: 30px; }
+        .chart-container img { width: 100%; border-radius: 10px; box-shadow: 0 2px 15px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ecf0f1; }
+        th { background: #667eea; color: white; }
+        tr:hover { background: #f8f9fa; }
+        .rating { color: #f1c40f; }
+        .progress-bar { height: 10px; background: #ecf0f1; border-radius: 5px; overflow: hidden; margin: 5px 0; }
+        .progress { height: 100%; border-radius: 5px; }
+        .star-1 { background: #e74c3c; }
+        .star-2 { background: #e67e22; }
+        .star-3 { background: #f1c40f; }
+        .star-4 { background: #2ecc71; }
+        .star-5 { background: #27ae60; }
+        footer { text-align: center; padding: 20px; color: #7f8c8d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Books Database Analysis</h1>
+            <p>Comprehensive report from scraped book data</p>
+            <p>Generated: 2026-01-29 21:32:42</p>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3>📖 Total Books</h3>
+                <div class="metric">400</div>
+                <div class="metric-label">books in database</div>
+            </div>
+            <div class="card">
+                <h3>📄 Pages Scraped</h3>
+                <div class="metric">20</div>
+                <div class="metric-label">pages processed</div>
+            </div>
+            <div class="card">
+                <h3>💰 Average Price</h3>
+                <div class="metric">£34.96</div>
+                <div class="metric-label">per book</div>
+            </div>
+            <div class="card">
+                <h3>⭐ Average Rating</h3>
+                <div class="metric">2.9</div>
+                <div class="metric-label">out of 5 stars</div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3>💵 Price Range</h3>
+                <p><strong>Minimum:</strong> £10.16</p>
+                <p><strong>Maximum:</strong> £59.90</p>
+                <p><strong>Median:</strong> £36.80</p>
+            </div>
+            <div class="card">
+                <h3>⭐ Rating Distribution</h3>
+                
+                <div style="margin-bottom: 8px;">
+                    <span>1 Star: 88 (22.0%)</span>
+                    <div class="progress-bar">
+                        <div class="progress star-1" style="width: 22.0%"></div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 8px;">
+                    <span>2 Stars: 82 (20.5%)</span>
+                    <div class="progress-bar">
+                        <div class="progress star-2" style="width: 20.5%"></div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 8px;">
+                    <span>3 Stars: 80 (20.0%)</span>
+                    <div class="progress-bar">
+                        <div class="progress star-3" style="width: 20.0%"></div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 8px;">
+                    <span>4 Stars: 73 (18.2%)</span>
+                    <div class="progress-bar">
+                        <div class="progress star-4" style="width: 18.25%"></div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 8px;">
+                    <span>5 Stars: 77 (19.2%)</span>
+                    <div class="progress-bar">
+                        <div class="progress star-5" style="width: 19.25%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card chart-container">
+            <h3>📊 Dashboard Overview</h3>
+            <img src="dashboard.png" alt="Dashboard">
+        </div>
+
+        <div class="grid">
+            <div class="card chart-container">
+                <h3>💰 Price Distribution</h3>
+                <img src="price_distribution.png" alt="Price Distribution">
+            </div>
+            <div class="card chart-container">
+                <h3>⭐ Rating Distribution</h3>
+                <img src="rating_distribution.png" alt="Rating Distribution">
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card chart-container">
+                <h3>📈 Price vs Rating</h3>
+                <img src="price_vs_rating.png" alt="Price vs Rating">
+            </div>
+            <div class="card chart-container">
+                <h3>📄 Books per Page</h3>
+                <img src="books_per_page.png" alt="Books per Page">
+            </div>
+        </div>
+
+        <div class="card chart-container">
+            <h3>🏆 Top & Bottom Priced Books</h3>
+            <img src="top_bottom_books.png" alt="Top Bottom Books">
+        </div>
+
+        <div class="card">
+            <h3>📋 Sample Books Data</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Rating</th>
+                        <th>Availability</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td>The Diary of a Young Girl</td>
+                        <td>£59.90</td>
+                        <td class="rating">★★★☆☆</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>Thomas Jefferson and the Tripoli Pirates: The Forg...</td>
+                        <td>£59.64</td>
+                        <td class="rating">★☆☆☆☆</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>Boar Island (Anna Pigeon #19)</td>
+                        <td>£59.48</td>
+                        <td class="rating">★★★☆☆</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>The Improbability of Love</td>
+                        <td>£59.45</td>
+                        <td class="rating">★☆☆☆☆</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>The Gray Rhino: How to Recognize and Act on the Ob...</td>
+                        <td>£59.15</td>
+                        <td class="rating">★★★★☆</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>Hamilton: The Revolution</td>
+                        <td>£58.79</td>
+                        <td class="rating">★★★☆☆</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>How to Speak Golf: An Illustrated Guide to Links L...</td>
+                        <td>£58.32</td>
+                        <td class="rating">★★★★★</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>Aristotle and Dante Discover the Secrets of the Un...</td>
+                        <td>£58.14</td>
+                        <td class="rating">★★★★☆</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>The Death of Humanity: and the Case for Life</td>
+                        <td>£58.11</td>
+                        <td class="rating">★★★★☆</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>The White Cat and the Monk: A Retelling of the Poe...</td>
+                        <td>£58.08</td>
+                        <td class="rating">★★★★☆</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>El Deafo</td>
+                        <td>£57.62</td>
+                        <td class="rating">★★★★★</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>Immunity: How Elie Metchnikoff Changed the Course ...</td>
+                        <td>£57.36</td>
+                        <td class="rating">★★★★★</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>I Had a Nice Time And Other Lies...: How to find l...</td>
+                        <td>£57.36</td>
+                        <td class="rating">★★★★☆</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>Slow States of Collapse: Poems</td>
+                        <td>£57.31</td>
+                        <td class="rating">★★★☆☆</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>Our Band Could Be Your Life: Scenes from the Ameri...</td>
+                        <td>£57.25</td>
+                        <td class="rating">★★★☆☆</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>Equal Is Unfair: America's Misguided Fight Against...</td>
+                        <td>£56.86</td>
+                        <td class="rating">★☆☆☆☆</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>The Wright Brothers</td>
+                        <td>£56.80</td>
+                        <td class="rating">★★★★☆</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>A Piece of Sky, a Grain of Rice: A Memoir in Four ...</td>
+                        <td>£56.76</td>
+                        <td class="rating">★★★★★</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>The Dinner Party</td>
+                        <td>£56.54</td>
+                        <td class="rating">★★☆☆☆</td>
+                        <td>In stock</td>
+                    </tr>
+                    <tr>
+                        <td>Eleanor & Park</td>
+                        <td>£56.51</td>
+                        <td class="rating">★★★★★</td>
+                        <td>In stock</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h3>📄 Scraping Performance</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Page</th>
+                        <th>URL</th>
+                        <th>Items</th>
+                        <th>Duration</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td>Page 1</td>
+                        <td><a href="https://books.toscrape.com/catalogue/page-1.html" target="_blank">View</a></td>
+                        <td>20</td>
+                        <td>12.71s</td>
+                        <td>✅ Success</td>
+                    </tr>
+                    <tr>
+                        <td>Page 2</td>
+                        <td><a href="https://books.toscrape.com/catalogue/page-2.html" target="_blank">View</a></td>
+                        <td>20</td>
+                        <td>13.86s</td>
+                        <td>✅ Success</td>
+                    </tr>
+                    <tr>
+                        <td>Page 3</td>
+                        <td><a href="https://books.toscrape.com/catalogue/page-3.html" target="_blank">View</a></td>
+                        <td>20</td>
+                        <td>14.05s</td>
+                        <td>✅ Success</td>
+                    </tr>
+                    <tr>
+                        <td>Page 4</td>
+                        <td><a href="https://books.toscrape.com/catalogue/page-4.html" target="_blank">View</a></td>
+                        <td>20</td>
+                        <td>14.55s</td>
+                        <td>✅ Success</td>
+                    </tr>
+                    <tr>
+                        <td>Page 5</td>
+                        <td><a href="https://books.toscrape.com/catalogue/page-5.html" target="_blank">View</a></td>
+                        <td>20</td>
+                        <td>15.56s</td>
+                        <td>✅ Success</td>
+                    </tr>
+                    <tr>
+                        <td>Page 6</td>
+                        <td><a href="https://books.toscrape.com/catalogue/page-6.html" target="_blank">View</a></td>
+                        <td>20</td>
+                        <td>14.66s</td>
+                        <td>✅ Success</td>
+                    </tr>
+                    <tr>
+                        <td>Page 7</td>
+                        <td><a href="https://books.toscrape.com/catalogue/page-7.html" target="_blank">View</a></td>
+                        <td>20</td>
+                        <td>13.60s</td>
+                        <td>✅ Success</td>
+                    </tr>
+                    <tr>
+                        <td>Page 8</td>
+                        <td><a href="https://books.toscrape.com/catalogue/page-8.html" target="_blank">View</a></td>
+                        <td>20</td>
+                        <td>13.76s</td>
+                        <td>✅ Success</td>
+                    </tr>
+                    <tr>
+                        <td>Page 9</td>
+                        <td><a href="https://books.toscrape.com/catalogue/page-9.html" target="_blank">View</a></td>
+                        <td>20</td>
+                        <td>12.65s</td>
+                        <td>✅ Success</td>
+                    </tr>
+                    <tr>
+                        <td>Page 10</td>
+                        <td><a href="https://books.toscrape.com/catalogue/page-10.html" target="_blank">View</a></td>
+                        <td>20</td>
+                        <td>13.99s</td>
+                        <td>✅ Success</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <footer>
+            <p>Generated by RPAFlow - Books Scraper Analysis Module</p>
+            <p>Data source: books.toscrape.com</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,114 @@
+version: '3.8'
+
+services:
+  # ===================
+  # RPAFlow API Server
+  # ===================
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: rpaflow-api
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=production
+      - DEBUG=false
+      - LOG_LEVEL=INFO
+      - DATABASE_URL=postgresql://rpaflow:rpaflow123@postgres:5432/rpaflow
+      - SELENIUM_HEADLESS=true
+      - PROXY_ENABLED=false
+    volumes:
+      - rpaflow-data:/app/data
+      - rpaflow-logs:/app/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - rpaflow-network
+    restart: unless-stopped
+
+  # ===================
+  # PostgreSQL Database
+  # ===================
+  postgres:
+    image: postgres:15-alpine
+    container_name: rpaflow-postgres
+    environment:
+      - POSTGRES_USER=rpaflow
+      - POSTGRES_PASSWORD=rpaflow123
+      - POSTGRES_DB=rpaflow
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - rpaflow-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rpaflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ===================
+  # Redis (Optional - for caching/queues)
+  # ===================
+  redis:
+    image: redis:7-alpine
+    container_name: rpaflow-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - rpaflow-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ===================
+  # Selenium Grid (Optional - for distributed scraping)
+  # ===================
+  selenium-hub:
+    image: selenium/hub:4.16.0
+    container_name: rpaflow-selenium-hub
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+    networks:
+      - rpaflow-network
+    restart: unless-stopped
+    profiles:
+      - selenium
+
+  chrome-node:
+    image: selenium/node-chrome:4.16.0
+    container_name: rpaflow-chrome-node
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=4
+    networks:
+      - rpaflow-network
+    restart: unless-stopped
+    profiles:
+      - selenium
+
+networks:
+  rpaflow-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  redis-data:
+  rpaflow-data:
+  rpaflow-logs:
